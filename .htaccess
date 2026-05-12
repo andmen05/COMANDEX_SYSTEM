@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /sistema%20comandex/
+
+# No reescribir archivos/directorios existentes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Todo al front controller
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
