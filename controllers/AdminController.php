@@ -24,18 +24,21 @@ class AdminController {
             $accion = $_POST['accion'] ?? '';
 
             if ($accion === 'crear_usuario') {
-                $this->userModel->create([
+                $nuevoId = $this->userModel->create([
                     'nombre'      => $_POST['nombre'],
                     'email'       => $_POST['email'],
                     'password'    => $_POST['password'],
                     'rol_id'      => (int)$_POST['rol_id'],
                     'sucursal_id' => (int)($_POST['sucursal_id'] ?? 1),
                 ]);
+                // Auditoría: inserción de nuevo usuario
+                $admin = $_SESSION['user_id'] ?? 'desconocido';
+                logger()->info("USUARIO_CREADO — nuevo_id:{$nuevoId} email:{$_POST['email']} por_admin:{$admin}");
                 redirect('admin?tab=usuarios&ok=1');
             }
 
             if ($accion === 'crear_producto') {
-                $this->productoModel->create([
+                $prodId = $this->productoModel->create([
                     'nombre'       => $_POST['nombre'],
                     'descripcion'  => $_POST['descripcion'] ?? '',
                     'precio'       => (float)$_POST['precio'],
@@ -43,6 +46,9 @@ class AdminController {
                     'disponible'   => isset($_POST['disponible']) ? 1 : 0,
                     'favorito'     => isset($_POST['favorito']) ? 1 : 0,
                 ]);
+                // Auditoría: inserción de nuevo producto
+                $admin = $_SESSION['user_id'] ?? 'desconocido';
+                logger()->info("PRODUCTO_CREADO — nuevo_id:{$prodId} nombre:{$_POST['nombre']} precio:{$_POST['precio']} por_admin:{$admin}");
                 redirect('admin?tab=productos&ok=1');
             }
         }

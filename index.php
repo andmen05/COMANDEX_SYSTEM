@@ -4,6 +4,22 @@ session_start();
 date_default_timezone_set('America/Bogota');   // ← Zona horaria Colombia
 require_once __DIR__ . '/config/database.php';
 
+// ─── Componente de Auditoría (Guía 8) ────────────────────────────────────────
+require_once __DIR__ . '/app/Core/Logger.php';
+
+/**
+ * Instancia global del Logger — accesible desde cualquier controlador o modelo.
+ * Uso: logger()->log('Mensaje', 'TIPO') o logger()->info('Mensaje')
+ */
+function logger(): \App\Core\Logger {
+    static $instance = null;
+    if ($instance === null) {
+        $instance = new \App\Core\Logger();
+    }
+    return $instance;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Autoloader simple
 spl_autoload_register(function ($class) {
     $paths = [
@@ -79,6 +95,10 @@ function csrf(): string {
 function verifyCsrf(): void {
     $token = $_POST['_csrf'] ?? '';
     if (!hash_equals($_SESSION['csrf'] ?? '', $token)) {
+        // Auditoría: intento de petición con token CSRF inválido
+        $ip  = $_SERVER['REMOTE_ADDR'] ?? 'desconocida';
+        $uid = $_SESSION['user_id']    ?? 'anonimo';
+        logger()->warning("CSRF inválido — usuario_id:{$uid} IP:{$ip} URL:{$_SERVER['REQUEST_URI']}");
         http_response_code(403);
         die('CSRF token inválido');
     }

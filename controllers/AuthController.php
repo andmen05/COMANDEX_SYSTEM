@@ -32,10 +32,17 @@ class AuthController {
 
                 $this->userModel->updateLastAccess($user['id']);
 
+                // Auditoría: login exitoso
+                $ip = $_SERVER['REMOTE_ADDR'] ?? 'desconocida';
+                logger()->auth("LOGIN_EXITOSO — usuario:{$email} rol:{$user['rol']} IP:{$ip}");
+
                 // Redirigir al primer módulo permitido
                 $landing = $permisos[0] ?? 'dashboard';
                 redirect($landing);
             } else {
+                // Auditoría: credenciales incorrectas
+                $ip = $_SERVER['REMOTE_ADDR'] ?? 'desconocida';
+                logger()->auth("LOGIN_FALLIDO — intento con email:{$email} IP:{$ip}");
                 $error = 'Credenciales incorrectas. Intenta de nuevo.';
             }
         }

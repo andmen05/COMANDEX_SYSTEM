@@ -57,6 +57,10 @@ class PagosController {
             // Marcar pedido como PAGADO y liberar la mesa
             $this->pedidoModel->updateEstado($pedido_id, 'pagado');
 
+            // Auditoría: pago registrado
+            $uid = $_SESSION['user_id'] ?? 'desconocido';
+            logger()->info("PAGO_REGISTRADO — pedido_id:{$pedido_id} total:{$total} metodo:{$metodo} cajero_id:{$uid}");
+
             // Redirigir a recibo
             redirect('pagos/cobrar/' . $pedido_id);
         }
