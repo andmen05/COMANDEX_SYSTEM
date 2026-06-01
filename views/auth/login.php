@@ -64,16 +64,6 @@
             </button>
         </form>
 
-        <!-- Demo credentials -->
-        <div class="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
-            <p class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Credenciales de demo</p>
-            <div class="space-y-1 text-xs text-slate-400">
-                <p><span class="text-slate-300 font-medium">Email:</span> diego.ramirez@laterraza.com</p>
-                <p><span class="text-slate-300 font-medium">Contraseña:</span> Admin1234</p>
-            </div>
-        </div>
-    </div>
-
     <p class="text-center text-slate-600 text-xs mt-6">© <?= date('Y') ?> Comandex POS · v<?= APP_VERSION ?></p>
 </div>
 
