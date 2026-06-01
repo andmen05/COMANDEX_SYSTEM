@@ -1,14 +1,11 @@
 <?php
-// config/database.php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'comandexx');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'comandexx');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_CHARSET', 'utf8mb4');
 
-define('APP_NAME', 'Comandex');
-define('APP_VERSION', '1.0.0');
-define('BASE_URL', '/COMANDEX');  // Ruta real en htdocs
+define('BASE_URL', getenv('BASE_URL') ?: '');
 
 function getPDO(): PDO {
     static $pdo = null;
